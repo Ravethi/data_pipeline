@@ -1,23 +1,44 @@
-name: dbt CI
+name: dbt CI/CD Pipeline
 
-on: [push]
+on:
+  push:
+    branches:
+      - main  # Trigger CI/CD when pushing to main
 
 jobs:
-  dbt-build:
+  dbt-test:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8'
+          python-version: '3.9'
 
       - name: Install dbt
-        run: pip install dbt-snowflake
+        run: |
+          python -m pip install --upgrade pip
+          pip install dbt-core dbt-snowflake
 
-      - name: Run dbt
+      - name: Run dbt Tests
         run: |
           dbt debug
-          dbt run
+          dbt compile
+          dbt test
+
+  deploy-to-prod:
+    needs: dbt-test  # Only run this if dbt-test passes
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Merge Main to Prod
+        run: |
+          git config --global user.email "tve16ie049@cet.ac.in"
+          git config --global user.name "Ravethi"
+          git checkout prod
+          git merge main --no-ff
+          git push origin prod
