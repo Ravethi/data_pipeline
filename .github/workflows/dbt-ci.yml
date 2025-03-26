@@ -22,6 +22,29 @@ jobs:
           python -m pip install --upgrade pip
           pip install dbt-core dbt-snowflake
 
+      - name: Configure dbt Profile
+        run: |
+          mkdir -p ~/.dbt
+          cat <<EOF > ~/.dbt/profiles.yml
+          my_dbt_profile:
+            target: dev
+            outputs:
+              dev:
+                type: snowflake
+                account: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+                user: ${{ secrets.SNOWFLAKE_USER }}
+                password: ${{ secrets.SNOWFLAKE_PASSWORD }}
+                role: dbt_role
+                warehouse: dbt_wh
+                database: dbt_db
+                schema: dbt_schema
+                threads: 4
+          EOF
+
+      - name: Set DBT_PROFILES_DIR
+        run: echo "DBT_PROFILES_DIR=$HOME/.dbt" >> $GITHUB_ENV
+
+
       - name: Run dbt Tests
         run: |
           dbt debug
