@@ -60,6 +60,7 @@ jobs:
 
       - name: Merge Main to Prod
         run: |
-          git checkout prod
-          git merge main --no-ff
-          git push origin prod
+          git fetch origin  # Ensure we have all remote branches
+          git checkout -b prod origin/prod  # Create and track prod branch locally
+          git merge main --no-ff  # Merge changes from main into prod
+          git push origin prod  # Push the updated prod branch
