@@ -58,6 +58,11 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v3
 
+      - name: Set up Git Identity
+        run: |
+          git config --global user.email "tve16ie049@cet.ac.in"
+          git config --global user.name "Ravethi"
+
       - name: Merge Main to Prod
         run: |
           git fetch origin  # Ensure we have all remote branches
