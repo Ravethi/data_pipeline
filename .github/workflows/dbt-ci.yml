@@ -47,6 +47,7 @@ jobs:
       - name: Run dbt Tests
         run: |
           dbt debug
+          dbt deps
           dbt compile
           dbt test
 
