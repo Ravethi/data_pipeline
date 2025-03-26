@@ -69,3 +69,4 @@ jobs:
           git checkout -b prod origin/prod  # Create and track prod branch locally
           git merge main --no-ff --allow-unrelated-histories # Merge changes from main into prod
           git push origin prod  # Push the updated prod branch
+
