@@ -62,6 +62,6 @@ jobs:
         run: |
           git config --global user.email "tve16ie049@cet.ac.in"
           git config --global user.name "Ravethi"
-          git checkout prod
+          git checkout prod || git checkout -b prod
           git merge main --no-ff
           git push origin prod
