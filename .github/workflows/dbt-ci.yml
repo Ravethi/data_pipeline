@@ -60,8 +60,6 @@ jobs:
 
       - name: Merge Main to Prod
         run: |
-          git config --global user.email "tve16ie049@cet.ac.in"
-          git config --global user.name "Ravethi"
           git checkout prod
           git merge main --no-ff
           git push origin prod
